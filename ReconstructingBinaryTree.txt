@@ -1,0 +1,41 @@
+
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+    TreeNode(int x) { val = x; }
+}
+
+class Solution {
+    static int num = 0;
+    public TreeNode findChildren(int[] pre,int[] in,int start,int end){
+        if(start > end){
+            return null;
+        }
+        int mid = -1;
+        for(int i=start; i<=end; i++){
+            if(in[i] == pre[num]) {
+                mid = i;
+                num++;
+                break;
+            }
+        }
+        if(mid == -1)
+            return null;
+        TreeNode treeNode = new TreeNode(in[mid]);
+        treeNode.left = findChildren(pre,in,start,mid-1);
+        treeNode.right = findChildren(pre,in,mid+1,end);
+        return treeNode;
+    }
+
+    public TreeNode reConstructBinaryTree(int [] pre,int [] in) {
+        num = 0;
+        return findChildren(pre,in,0,in.length-1);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        TreeNode treeNode = new Solution().reConstructBinaryTree(new int[]{1,2,4,3,5,6},new int[]{4,2,1,5,3,6});
+    }
+}
